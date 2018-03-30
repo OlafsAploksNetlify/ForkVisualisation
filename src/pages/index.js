@@ -1,13 +1,37 @@
 import React from 'react'
 import Link from 'gatsby-link'
+import FrontPage from '../components/FrontPage/FrontPage.js'
+import './styles/index.scss'
+let container;
 
-const IndexPage = () => (
-  <div>
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <Link to="/page-2/">Go to page 2</Link>
-  </div>
-)
+class IndexPage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstPage: true
+    };
+  container = this;
+  }
 
-export default IndexPage
+  changePage(code) {
+    console.log(code);
+    container.setState({
+      firstPage: false
+    });
+  }
+
+  render() {
+    return (
+    (this.state.firstPage) ?
+      <FrontPage
+        changePage={this.changePage}
+      />
+      : //Vizualizācija
+      <div>
+        <h1>Otrā lapa</h1>
+      </div>
+    );
+  }
+}
+
+export default IndexPage;
