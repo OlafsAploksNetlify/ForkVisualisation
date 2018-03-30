@@ -1,6 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
+    title: 'OSK practical assignment',
   },
-  plugins: ['gatsby-plugin-react-helmet'],
+  plugins: [
+    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-sass'
+  ],
 };
