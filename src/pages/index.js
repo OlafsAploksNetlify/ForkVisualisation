@@ -13,8 +13,8 @@ class IndexPage extends React.Component {
   container = this;
   }
 
-  changePage(code) {
-    console.log(code);
+  changePage({ parseCode }) {
+    console.log(parseCode);
     container.setState({
       firstPage: false
     });

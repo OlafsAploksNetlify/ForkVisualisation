@@ -2,14 +2,30 @@ import React from 'react'
 import Link from 'gatsby-link'
 import './styles.scss'
 
+import Parser from '../../services/Parser.js';
+
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
+
+    this.parse = this.parse.bind(this);
   }
 
   parse() {
-
-    // this.props.changePage(parsedCode);  
+    const code = this.textarea.value;
+    let parsedCode = null;
+    try {
+      parsedCode = Parser.parse(code);
+    } catch (err) {
+      if (err instanceof Parser.Exception) {
+        alert(err);
+      }
+    }
+    if (parsedCode) {
+      this.props.changePage({
+        parsedCode,
+      });
+    }
   }
 
   render() {
@@ -25,13 +41,13 @@ class IndexPage extends React.Component {
         <li>fork()</li>
       </ul>
       <textarea
-        ref="textarea"
+        ref={(e) => {this.textarea = e}}
         rows="15"
         cols="100"
         placeholder="Ievadiet kodu te"
         required="true">
       </textarea>
-      <button onClick={() => {this.props.changePage(this.refs.textarea.value)}}>Turpināt</button>
+      <button onClick={this.parse}>Turpināt</button>
     </div>
   );
   }
