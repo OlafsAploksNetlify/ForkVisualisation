@@ -30,7 +30,7 @@ class IndexPage extends React.Component {
 
   render() {
     return (
-    <div>
+    <div className="container">
       <h1>OSK fork demonstrācija</h1>
       <p>Demonstrācija attēlo funkcijas fork izpildi. Logā zemāk ierakstiet kodu, kuru vēlaties izpildīt.</p>
       <p>Kodā atļautās valodas konstrukcijas ir:</p>
