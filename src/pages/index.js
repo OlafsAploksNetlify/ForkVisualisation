@@ -38,6 +38,14 @@ class IndexPage extends React.Component {
         {pid: 0, code: "Test", children: [
           {pid: 199, code: "Test Children", children: [
             {pid: 1949, code: "Test Children", children: null},
+            {pid: 555, code: "Test Children", children: [
+              {pid: 3142, code: "Test Children", children: null},
+              {pid: 2222, code: "Test Children", children: [
+                {pid: 123, code: "Test Children", children: null},
+                {pid: 456, code: "Test Children", children: null},
+                {pid: 789, code: "Test Children", children: null},
+              ]},
+            ]},
             {pid: 1299, code: "Test Children", children: [
               {pid: 1999, code: "Test Children", children: null},
               {pid: 1149, code: "Test Children", children: null},
@@ -71,71 +79,51 @@ class IndexPage extends React.Component {
   }
 
 
-  createThreadWindow(thread, nodeHeight) {
-
-    // let partitions = xOffsetMatrix[height]; //Cik daļās ekrāns jādala - tik cik vecāku tik daļu
-    console.log(thread.pid);
+  createThreadWindow(thread, nodeHeight, childIndex, parentVerticalOffset) {
     return <ThreadWindow
       key={thread.pid}
       pid={thread.pid}
-      code={thread.code}
       xOffset={nodeHeight}
       yOffset={usedHeight}
       height={this.threadWindowParams.height}
       width={this.threadWindowParams.width}
-      horizontalMargin={25} //space between thread windows in px
+      parentVerticalOffset={parentVerticalOffset}
+      childIndex={childIndex}
+      lineWidth={2}
+      horizontalMargin={50} //space between thread windows in px
     />
   }
 
-  renderThreadWindows(currentThread, treeHeight, startingOffset) {
+
+  renderThreadWindows(currentThread, treeHeight, childIndex, pOffset) {
     //ja nav procesu?
     if (typeof(currentThread) == "undefined") {
       return null;
     }
+
     //base case - lapa
     if(currentThread.children == null) {
-      return [this.createThreadWindow(currentThread, treeHeight)];
+      return [this.createThreadWindow(currentThread, treeHeight, childIndex, pOffset)];
     }
     //procesa tiešo bērnu skaits - 1 soļa attālumā
     let childrenCount = currentThread.children.length;
-    let array = [this.createThreadWindow(currentThread, treeHeight)];
+    let array = [this.createThreadWindow(currentThread, treeHeight, childIndex, pOffset)];
 
     let i = 0; //Bērna kārtas numurs
+    let parentOffset = usedHeight; //Priekš līnijām
     for (let thread in currentThread.children) {
       let thr = currentThread.children[thread];
       if (i==0) { //ja pirmais bērns - tad vēl pa y asi nestaigā
-        array = array.concat(this.renderThreadWindows(thr, treeHeight+1));
+        array = array.concat(this.renderThreadWindows(thr, treeHeight+1, i, parentOffset));
       } else {
         usedHeight += this.threadWindowParams.height*2;
-        array = array.concat(this.renderThreadWindows(thr, treeHeight+1));
+        array = array.concat(this.renderThreadWindows(thr, treeHeight+1, i, parentOffset));
       }
       i++;
     }
     return array;
   }
 
-  // renderThreadWindows(currentThread, height, childrenIndex, startingOffset) {
-  //   if(currentThread.children == null) {
-  //     return [this.createThreadWindow(currentThread, height, childrenIndex)];
-  //   }
-  //   let children = currentThread.children;
-  //   xOffsetMatrix[height+1] = children.length;
-  //
-  //   let array = [this.createThreadWindow(currentThread,xOffsetMatrix[height], height)];
-  //   xOffsetMatrix[height]+=1;
-  //   console.log(xOffsetMatrix[height]);
-  //   let i = 0; //Bērna kārtas numurs
-  //   for (let thread in children) {
-  //     let thr = currentThread.children[thread];
-  //     array = array.concat(this.renderThreadWindows(thr, height+1, i));
-  //     i++;
-  //   }
-  //   // console.log(array);
-  //   return array;
-  //
-  //   // console.log(this.state.threads.map(this.createThreadWindow));
-  //   // return this.state.threads.map(this.createThreadWindow)
-  // }
 
   leftContainer() {
     return (
@@ -148,7 +136,7 @@ class IndexPage extends React.Component {
   rightContainer() {
     return (
       <div className="rightContainer">
-        {this.renderThreadWindows(this.state.threads[0], 0)}
+        {this.renderThreadWindows(this.state.threads[0], 0, null, null)}
       </div>
     );
   }

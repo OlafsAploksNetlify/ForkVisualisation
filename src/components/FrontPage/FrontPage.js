@@ -45,6 +45,7 @@ class IndexPage extends React.Component {
         rows="15"
         cols="100"
         placeholder="Ievadiet kodu te"
+        value="if(fork()){print(A);}"
         required="true">
       </textarea>
       <button onClick={this.parse}>Turpināt</button>
