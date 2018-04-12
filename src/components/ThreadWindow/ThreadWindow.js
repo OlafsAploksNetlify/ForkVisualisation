@@ -82,12 +82,17 @@ class ThreadWindow extends React.Component {
 
     }
     return (
-      <div className="threadcontainer"
+      <div className={`threadcontainer ${this.props.active ? 'active' : ''} progress_${Math.round(this.props.progress * 100)}`}
         style={{
           top:this.state.yOffset,
           left: this.state.xOffset,
           width: this.props.width+"px",
           height: this.props.height+"px",
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          this.props.onClick(this.props.pid);
         }}
           >
         <a href="/">

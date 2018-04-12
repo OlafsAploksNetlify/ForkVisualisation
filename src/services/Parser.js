@@ -1,17 +1,17 @@
-// const code = `if (fork() && !fork()) {
-//   if (fork() && fork()) {
-//     print(1);
-//   }
-// } else if ((!fork() || fork()) && fork()) {
-//   print(2);
-// } else {
-//   print(3);
-// }
-// print(5)
-// if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){}
-// print("6")
-// if (!(fork() && !fork())){}elseif(){}
-// `;
+const code = `if (fork() && !fork()) {
+  if (fork() && fork()) {
+    print(1);
+  }
+} else if ((!fork() || fork()) && fork()) {
+  print(2);
+} else {
+  print(3);
+}
+print(5)
+if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){}
+print("6")
+if (!(fork() && !fork())){}elseif(){}
+`;
 
 class Parser {
   constructor(code) {
@@ -170,6 +170,7 @@ class Parser {
       let content = this.getBracketContent(code, '{}', condition.end + 1);
 
       branches.push({
+        type: 'branch',
         condition: this.parseCondition(condition.content),
         code: this.parseCode(content.content),
       });

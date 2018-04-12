@@ -9,6 +9,25 @@ a {
   height: 25px;
   width: 100px;
   background-color: black;
+
+  border: 3px solid transparent;
+  &.active {
+    border-color: yellow;
+  }
+
+  $steps: 100;
+  $sColor: #46ae1c;
+  $isColor: darken($sColor, 20%);
+  $eColor: #5e5e5e;
+  @for $i from 0 through $steps {
+    &.progress_#{$i} {
+      background: linear-gradient(90deg, $isColor #{$i/100*100% - 0.1%}, $isColor #{$i/100*100%}, $eColor #{$i/100*100%+0.1%}, $eColor #{(1 - $i/100)*100%});
+      &.active {
+        background: linear-gradient(90deg, $sColor #{$i/100*100% - 0.1%}, $sColor #{$i/100*100%}, $eColor #{$i/100*100%+0.1%}, $eColor #{(1 - $i/100)*100%});
+      }
+    }
+}
+
   padding-left: 5px;
   text-align: center;
   .first {

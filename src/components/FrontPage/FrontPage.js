@@ -4,6 +4,21 @@ import './styles.scss'
 
 import Parser from '../../services/Parser.js';
 
+const code = `if (fork() && !fork()) {
+  if (fork() && fork()) {
+    print(1);
+  }
+} else if ((!fork() || fork()) && fork()) {
+  print(2);
+} else {
+  print(3);
+}
+print(5)
+if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){print('x')}
+print("6")
+if (!(fork() && !fork())){print(55)}elseif(){print(567)}
+`;
+
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
@@ -45,8 +60,8 @@ class IndexPage extends React.Component {
         rows="15"
         cols="100"
         placeholder="Ievadiet kodu te"
-        value="if(fork()){print(A);}"
         required="true">
+        {code}
       </textarea>
       <button onClick={this.parse}>Turpināt</button>
     </div>

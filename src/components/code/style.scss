@@ -1,0 +1,52 @@
+.codeblock {
+  font-size: 15px;
+  padding: 1px 0;
+  > * {
+    &:first-child {
+      margin-top: 0;
+    }
+    margin-top: 8px;
+  }
+
+  margin-left: 20px;
+
+  .active {
+    background: rgba(255, 255, 0, 0.5);
+    background: rgb(254, 254, 119);
+  }
+  .codeRow {
+
+  }
+  .conditionBlock {
+    &.true {
+      background: rgba(0, 255, 0, 0.2);
+    }
+    &.false {
+      background: rgba(255, 0, 0, 0.2);
+    }
+    &:hover {
+      background: rgba(255, 0, 0, 0.5);
+    }
+  }
+}
+
+
+.codeRow span {
+  display: inline-block;
+}
+.codeblock .conditionBlock.true {
+    background: rgba(80, 217, 78, 0.3);
+    border: 1px solid #3ba23b;
+}
+span.conditionBlock {
+    margin: 2px 3px;
+    /* margin: 3px; */
+    padding: 0 3px;
+    border: 1px solid #5a5a5a;
+    border-radius: 5px;
+}
+
+.codeblock .conditionBlock.false {
+    background: #f05b6166;
+    border: 1px solid #951f1f;
+}
