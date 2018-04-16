@@ -54,7 +54,7 @@ class MainPage extends React.Component {
       });
     });
 
-    window.tt = this.stepForward.bind(this);
+    // window.tt = this.stepForward.bind(this);
   }
 
   componentDidMount() {
