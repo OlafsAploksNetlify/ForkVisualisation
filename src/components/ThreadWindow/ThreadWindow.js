@@ -16,13 +16,27 @@ import './styles.scss'
 class ThreadWindow extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      xOffset: this.props.xOffset*(this.props.width+this.props.horizontalMargin),
+      xOffset: this.props.xOffset*(this.props.width*2), // *2 for margin
       yOffset: this.props.yOffset,
+      horizontalMargin: Math.round(this.props.width + this.borderThickness*2),
+      height: this.props.height,
+      width: this.props.width,
+      parentVerticalOffset: this.props.parentVerticalOffset,
     };
-    console.log(this.props.pid);
-  console.log(this.props.childIndex);
+    this.borderThickness = 3;
+  }
+
+  componentWillReceiveProps(newProps) {
+    // console.log(newProps);
+      this.state = {
+        xOffset: newProps.xOffset * (newProps.width*2), // *2 for margin
+        yOffset: newProps.yOffset,
+        horizontalMargin: Math.round(newProps.width + this.borderThickness*2),
+        height: newProps.height,
+        width: newProps.width,
+        parentVerticalOffset: newProps.parentVerticalOffset,
+      };
   }
 
   getInitialState() {
@@ -34,14 +48,19 @@ class ThreadWindow extends React.Component {
   }
 
   createVerticalLine() {
+    let topOffset = (this.state.parentVerticalOffset + this.state.height) - (this.state.yOffset + this.borderThickness);
+    let leftOffset = this.props.xOffset-( this.props.width/2 + this.state.horizontalMargin);
+
+    if (this.props.parentVerticalOffset == this.props.yOffset) { // first child doesn't need vertical lines
+      return;
+    }
     return(
       [<div className="line"
-        key={"vertical"}
         style={{
-          height: this.state.yOffset-(this.props.parentVerticalOffset+this.props.height/2) + this.props.lineWidth,
+          height: this.state.yOffset - (this.state.parentVerticalOffset + this.state.height/2) + this.props.lineWidth,
           width: this.props.lineWidth+"px",
-          top: this.props.parentVerticalOffset-this.state.yOffset+this.props.height,
-          left: this.props.xOffset-(this.props.width/2+this.props.horizontalMargin),
+          top: topOffset,
+          left: leftOffset,
       }}></div>]
     );
   }
@@ -49,11 +68,11 @@ class ThreadWindow extends React.Component {
   createHorizontalLine() {
     let lineWidth, leftOffset;
     if (this.props.childIndex != 0) { // nav pirmais bērns -> garāka horizontāla līnija
-      lineWidth = this.props.width/2 + this.props.horizontalMargin - this.props.lineWidth;
-      leftOffset = (-this.props.width/2 - this.props.horizontalMargin + this.props.lineWidth+1);
+      lineWidth = (this.props.width/2 + this.state.horizontalMargin) - (this.props.lineWidth + this.borderThickness);
+      leftOffset = (this.props.lineWidth+1) - (this.props.width/2 + this.state.horizontalMargin);
     } else { // pirmais bērns
-      lineWidth = this.props.horizontalMargin;
-      leftOffset = (-this.props.horizontalMargin);
+      lineWidth = this.props.width;
+      leftOffset = (-this.state.horizontalMargin + this.borderThickness);
     }
     return(
       <div className="line"
@@ -61,7 +80,7 @@ class ThreadWindow extends React.Component {
         style={{
           height: this.props.lineWidth+"px",
           width: lineWidth,
-          top: this.props.height/2,
+          top: (this.state.height - this.borderThickness)/2,
           left: leftOffset,
       }}></div>
     );
@@ -78,9 +97,6 @@ class ThreadWindow extends React.Component {
   }
 
   render() {
-    let connectingLines = {
-
-    }
     return (
       <div className={`threadcontainer ${this.props.active ? 'active' : ''} progress_${Math.round(this.props.progress * 100)}`}
         style={{
@@ -97,7 +113,8 @@ class ThreadWindow extends React.Component {
           >
         <a href="/">
           <h4 style={{
-            lineHeight: this.props.height + "px",
+            lineHeight: this.props.height-this.borderThickness + "px",
+            fontSize: this.props.zoomConstant*15 + "px",
           }}>
           {this.props.pid}</h4>
         </a>

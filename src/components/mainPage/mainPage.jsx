@@ -1,6 +1,7 @@
 import React from 'react'
 
 import ThreadWindow from '../ThreadWindow/ThreadWindow.js'
+import ThreadTree from '../ThreadTree/ThreadTree.jsx'
 import './style.scss'
 
 // let xOffsetMatrix = new Array(100).join('0').split('').map(parseFloat);
@@ -27,14 +28,8 @@ class MainPage extends React.Component {
       state: rootThread.getState(),
       activePid: rootThread.pid,
       output: [],
+      zoomValue: 1,
     };
-
-    //ja pamaini te, tad pamaini arī scss failā
-    this.threadWindowParams = {
-      width: 100,
-      height: 50,
-    }
-
     this.scheduler = new Scheduler([rootThread]);
 
     this.processes = {};
@@ -57,6 +52,12 @@ class MainPage extends React.Component {
     // window.tt = this.stepForward.bind(this);
   }
 
+  renderZoomValue(zoomValue) {
+    this.setState({
+      zoomValue: zoomValue
+    });
+  }
+
   componentDidMount() {
       // console.log(this.myInput.offsetWidth);
   }
@@ -64,6 +65,10 @@ class MainPage extends React.Component {
   stepForward() {
     const lastExecuted = this.scheduler.execute();
     // this.thread.stepForward();
+    if(lastExecuted == null) {
+        return;
+    }
+
     this.setState({
       state: lastExecuted.getState(),
       program: lastExecuted.getProgram(),
@@ -72,70 +77,12 @@ class MainPage extends React.Component {
     this.forceUpdate();
   }
 
-  createThread({parsedCode}, index) {
-    let threadlist = this.state.threads;
-    threadlist.push({
-      pid: 0,
-      code: parsedCode[0].rawCode
-    });
-    this.setState({threads: threadlist});
-  }
-
   changeVisibleThread({pid}) {
     this.setState({
       state: this.processes[pid].getState(),
       program: this.processes[pid].getProgram(),
       activePid: pid,
     });
-  }
-
-
-  createThreadWindow(thread, nodeHeight, childIndex, parentVerticalOffset) {
-    return <ThreadWindow
-      active={this.state.activePid === thread.pid}
-      key={thread.pid}
-      pid={thread.pid}
-      progress={thread.progress()}
-      xOffset={nodeHeight}
-      yOffset={usedHeight}
-      height={this.threadWindowParams.height}
-      width={this.threadWindowParams.width}
-      onClick={(pid) => {this.changeVisibleThread({pid})}}
-      parentVerticalOffset={parentVerticalOffset}
-      childIndex={childIndex}
-      lineWidth={2}
-      horizontalMargin={50} //space between thread windows in px
-    />
-  }
-
-
-  renderThreadWindows(currentThread, treeHeight, childIndex, pOffset) {
-    //ja nav procesu?
-    if (typeof(currentThread) == "undefined") {
-      return null;
-    }
-
-    //base case - lapa
-    if(currentThread.children == null) {
-      return [this.createThreadWindow(currentThread, treeHeight, childIndex, pOffset)];
-    }
-    //procesa tiešo bērnu skaits - 1 soļa attālumā
-    let childrenCount = currentThread.children.length;
-    let array = [this.createThreadWindow(currentThread, treeHeight, childIndex, pOffset)];
-
-    let i = 0; //Bērna kārtas numurs
-    let parentOffset = usedHeight; //Priekš līnijām
-    for (let thread in currentThread.children) {
-      let thr = currentThread.children[thread];
-      if (i==0) { //ja pirmais bērns - tad vēl pa y asi nestaigā
-        array = array.concat(this.renderThreadWindows(thr, treeHeight+1, i, parentOffset));
-      } else {
-        usedHeight += this.threadWindowParams.height*1.5;
-        array = array.concat(this.renderThreadWindows(thr, treeHeight+1, i, parentOffset));
-      }
-      i++;
-    }
-    return array;
   }
 
 
@@ -152,9 +99,15 @@ class MainPage extends React.Component {
 
 // ref={input => {this.myInput = input}}
   rightContainer() {
+    // console.log(this.state.threads);
     return (
-      <div className="rightContainer">
-        {this.renderThreadWindows(this.state.threads[0], 0, null, null)}
+      <div className="rightContainer"
+        ref={"rightContainer"}>
+        <ThreadTree
+          ThreadTree={this.state.threads}
+          renderZoomValue={this.renderZoomValue.bind(this)}
+          rightContainerRef={this.refs.rightContainer}
+        />
       </div>
     );
   }
@@ -177,6 +130,9 @@ class MainPage extends React.Component {
         {leftContainer}
         {rightContainer}
         {outputContainer}
+        <div className="zoomContainer">
+          <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
+        </div>
       </div>
     );
   }
