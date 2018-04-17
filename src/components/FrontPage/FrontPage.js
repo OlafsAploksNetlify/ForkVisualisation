@@ -13,11 +13,23 @@ const code = `if (fork() && !fork()) {
 } else {
   print(3);
 }
-print(5)
-if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){print('x')}
-print("6")
 if (!(fork() && !fork())){print(55)}elseif(){print(567)}
 `;
+
+// const code = `if (fork() && !fork()) {
+//   if (fork() && fork()) {
+//     print(1);
+//   }
+// } else if ((!fork() || fork()) && fork()) {
+//   print(2);
+// } else {
+//   print(3);
+// }
+// print(5);
+// if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){print('x')}
+// print("6")
+// if (!(fork() && !fork())){print(55)}elseif(){print(567)}
+// `;
 
 class IndexPage extends React.Component {
   constructor(props) {

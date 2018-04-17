@@ -4,6 +4,7 @@ import ThreadWindow from '../ThreadWindow/ThreadWindow.js'
 let usedHeight = 0;
 
 import CodeBlock from '../code/code.jsx';
+import './style.scss'
 
 import Thread from '../../services/Thread.js';
 import Scheduler from '../../services/scheduler.js'
@@ -14,20 +15,39 @@ class ThreadTree extends React.Component {
     super(props);
     this.state = {
       threads: this.props.ThreadTree,
+      zoomConstant: 1,
+      zoomX: 0,
+      zoomY: 0,
     }
 
     //ja pamaini te, tad pamaini arī scss failā
     this.threadWindowParams = {
       width: 100,
       height: 50,
-      zoomConstant: 1,
-      zoomX: 0,
-      zoomY: 0,
     }
+    this.setZoomTimer = null;
+  }
+
+  handleScroll(event) {
+    event.preventDefault();
+    let newZoomValue = this.state.zoomConstant;
+    if (event.deltaY > 0) { //scrolls down = zooms out
+      newZoomValue -= 0.1;
+      if(newZoomValue > 0.2) {
+        this.setState({zoomConstant: (this.state.zoomConstant - 0.1)});
+        this.props.renderZoomValue(newZoomValue);
+      }
+    } else {
+      newZoomValue += 0.1;
+      if (newZoomValue <= 1.6) {
+        this.setState({zoomConstant: (this.state.zoomConstant + 0.1)});
+        this.props.renderZoomValue(newZoomValue);
+      }
+    }
+
   }
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps.ThreadTree);
     this.setState({
       threads: newProps.ThreadTree,
     });
@@ -54,13 +74,14 @@ class ThreadTree extends React.Component {
       progress={thread.progress()}
       xOffset={nodeHeight}
       yOffset={usedHeight}
-      height={this.threadWindowParams.height}
-      width={this.threadWindowParams.width}
+      height={this.threadWindowParams.height*this.state.zoomConstant}
+      width={this.threadWindowParams.width*this.state.zoomConstant}
+      zoomConstant={this.state.zoomConstant}
       onClick={(pid) => {this.changeVisibleThread({pid})}}
       parentVerticalOffset={parentVerticalOffset}
       childIndex={childIndex}
       lineWidth={2}
-      horizontalMargin={50} //space between thread windows in px
+      horizontalMargin={100} //space between thread windows in px
     />
   }
 
@@ -86,7 +107,7 @@ class ThreadTree extends React.Component {
       if (i==0) { //ja pirmais bērns - tad vēl pa y asi nestaigā
         array = array.concat(this.renderThreadWindows(thr, treeHeight+1, i, parentOffset));
       } else {
-        usedHeight += this.threadWindowParams.height*1.5;
+        usedHeight += this.threadWindowParams.height*this.state.zoomConstant*1.5;
         array = array.concat(this.renderThreadWindows(thr, treeHeight+1, i, parentOffset));
       }
       i++;
@@ -95,12 +116,14 @@ class ThreadTree extends React.Component {
   }
 
   render() {
+    usedHeight = 0;
     return(
       <div style={{
         height: 100 + "%",
         width: 100 + "%",
-        backgroundColor: "red"
-      }}>
+      }}
+      onWheel = {(e) => this.handleScroll(e)}
+      >
       {this.renderThreadWindows(this.state.threads[0], 0, null, null)}
       </div>
     );

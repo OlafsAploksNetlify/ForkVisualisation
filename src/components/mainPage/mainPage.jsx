@@ -28,8 +28,8 @@ class MainPage extends React.Component {
       state: rootThread.getState(),
       activePid: rootThread.pid,
       output: [],
+      zoomValue: 1,
     };
-
     this.scheduler = new Scheduler([rootThread]);
 
     this.processes = {};
@@ -50,6 +50,12 @@ class MainPage extends React.Component {
     });
 
     window.tt = this.stepForward.bind(this);
+  }
+
+  renderZoomValue(zoomValue) {
+    this.setState({
+      zoomValue: zoomValue
+    });
   }
 
   componentDidMount() {
@@ -95,10 +101,16 @@ class MainPage extends React.Component {
   rightContainer() {
     // console.log(this.state.threads);
     return (
-      <div className="rightContainer">
+      <div className="rightContainer"
+        ref={"rightContainer"}>
         <ThreadTree
           ThreadTree={this.state.threads}
+          renderZoomValue={this.renderZoomValue.bind(this)}
+          rightContainerRef={this.refs.rightContainer}
         />
+        <div className="zoomContainer">
+          <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
+        </div>
       </div>
     );
   }
