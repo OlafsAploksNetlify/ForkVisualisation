@@ -50,6 +50,11 @@ class MainPage extends React.Component {
     });
 
     window.tt = this.stepForward.bind(this);
+    window.scrollTo = this.scrollTo.bind(this);
+  }
+
+  scrollTo() {
+    this.refs.rightContainer.scrollTop()
   }
 
   renderZoomValue(zoomValue) {
@@ -108,9 +113,6 @@ class MainPage extends React.Component {
           renderZoomValue={this.renderZoomValue.bind(this)}
           rightContainerRef={this.refs.rightContainer}
         />
-        <div className="zoomContainer">
-          <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
-        </div>
       </div>
     );
   }
@@ -133,6 +135,9 @@ class MainPage extends React.Component {
         {leftContainer}
         {rightContainer}
         {outputContainer}
+        <div className="zoomContainer">
+          <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
+        </div>
       </div>
     );
   }
