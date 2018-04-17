@@ -16,6 +16,7 @@ import './styles.scss'
 class ThreadWindow extends React.Component {
   constructor(props) {
     super(props);
+    this.borderThickness = 3;
     this.state = {
       xOffset: this.props.xOffset*(this.props.width*2), // *2 for margin
       yOffset: this.props.yOffset,
@@ -24,11 +25,9 @@ class ThreadWindow extends React.Component {
       width: this.props.width,
       parentVerticalOffset: this.props.parentVerticalOffset,
     };
-    this.borderThickness = 3;
   }
 
   componentWillReceiveProps(newProps) {
-    // console.log(newProps);
       this.state = {
         xOffset: newProps.xOffset * (newProps.width*2), // *2 for margin
         yOffset: newProps.yOffset,
