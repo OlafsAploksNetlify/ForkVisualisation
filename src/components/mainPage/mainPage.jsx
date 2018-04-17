@@ -48,7 +48,7 @@ class MainPage extends React.Component {
       });
     });
 
-    // window.tt = this.stepForward.bind(this);
+    this.stepForward = this.stepForward.bind(this);
   }
 
   renderZoomValue(zoomValue) {
@@ -89,7 +89,12 @@ class MainPage extends React.Component {
     return (
       <div className="main-page">
 
-        <div className="top-container">:)</div>
+        <div className="top-container">
+          <i className="fas fa-arrow-left" onClick={this.props.goBack} />
+
+          <button onClick={this.stepForward}>Solis</button>
+
+        </div>
 
         <div className="middle-block">
           <div className="leftContainer">

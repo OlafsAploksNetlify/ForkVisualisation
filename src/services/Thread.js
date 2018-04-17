@@ -296,6 +296,7 @@ class Thread {
   }
 
   static create() {
+    next_pid = 1;
     const p = new this(...arguments);
     return p;
   }

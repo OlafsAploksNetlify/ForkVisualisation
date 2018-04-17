@@ -6,6 +6,26 @@ import Parser from '../../services/Parser.js';
 
 const examples = [
   {
+    title: 'KD0',
+    code: `if (!fork() || !fork()) {
+  print("A");
+} else if (!fork() && fork()) {
+  print("B");
+} else {
+  print("C");
+}`,
+  },
+  {
+    title: 'KD1',
+    code: `if (!fork() && fork()) {
+  print("A");
+} else if (fork() || !fork()) {
+  print("B");
+} else {
+  print("C");
+}`,
+  },
+  {
     title: 'Liels piemērs',
     code: `if (fork() && !fork()) {
   if (fork() && fork()) {
@@ -51,9 +71,9 @@ class IndexPage extends React.Component {
     }
   }
 
-  handleChange = (e, { name, value }) => {
+  handleChange = (e) => {
       this.setState({
-        [name]: value,
+        [e.target.name]: e.target.value,
       });
   }
 
@@ -73,9 +93,8 @@ class IndexPage extends React.Component {
       <div>
         {examples.map(v => (
           <button key={v.title} onClick={e => {
-            this.handleChange(e, {
-              name: 'code',
-              value: v.code,
+            this.setState({
+              code: v.code,
             });
           }}>{v.title}</button>
         ))}

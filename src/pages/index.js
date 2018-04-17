@@ -12,11 +12,18 @@ class IndexPage extends React.Component {
     };
 
     this.changePage = this.changePage.bind(this);
+    this.goBack = this.goBack.bind(this);
   }
 
   changePage({ parsedCode }) {
     this.setState({
       program: parsedCode,
+    });
+  }
+
+  goBack() {
+    this.setState({
+      program: null,
     });
   }
 
@@ -28,6 +35,7 @@ class IndexPage extends React.Component {
         />
         : //Vizualizācija
         <MainPage
+          goBack={this.goBack}
           program={this.state.program}
         />
     );

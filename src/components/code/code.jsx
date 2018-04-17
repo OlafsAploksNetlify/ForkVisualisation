@@ -22,7 +22,7 @@ const Statements = {
         <span className={`conditionBlock ${additionalClass}`}>
           {'('}
           {value.map((condition, index) => (
-            <span>
+            <span key={index}>
               {index !== 0 ? ` ${type.replace('and', '&&').replace('or', '||')} ` : null}
               <Statements.Condition condition={condition} state={state[0] === index ? state.slice(1) : [null]} />
             </span>
@@ -58,6 +58,7 @@ const Statements = {
       <div>
         {program.value.map((branch, index) => (
           <Statements.IfBranch
+            key={index}
             {...branch}
             firstCondition={index === 0}
             state={state[0] === index ? state.slice(1) : [null]}
