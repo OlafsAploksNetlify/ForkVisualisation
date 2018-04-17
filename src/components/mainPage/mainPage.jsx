@@ -22,7 +22,6 @@ class MainPage extends React.Component {
     this.thread = rootThread;
 
     this.state = {
-      rightContainerWidth: this.rightContainer.height,
       threads: [rootThread],
       program: rootThread.getProgram(),
       state: rootThread.getState(),
@@ -64,7 +63,7 @@ class MainPage extends React.Component {
 
   stepForward() {
     const lastExecuted = this.scheduler.execute();
-    // this.thread.stepForward();
+
     if(lastExecuted == null) {
         return;
     }
@@ -85,54 +84,36 @@ class MainPage extends React.Component {
     });
   }
 
-
-  leftContainer() {
-    return (
-      <div className="leftContainer" style={{overflow: 'scroll'}}>
-        <CodeBlock
-          program={this.state.program}
-          state={this.state.state}
-        />
-      </div>
-    );
-  }
-
-// ref={input => {this.myInput = input}}
-  rightContainer() {
-    // console.log(this.state.threads);
-    return (
-      <div className="rightContainer"
-        ref={"rightContainer"}>
-        <ThreadTree
-          ThreadTree={this.state.threads}
-          renderZoomValue={this.renderZoomValue.bind(this)}
-          rightContainerRef={this.refs.rightContainer}
-        />
-      </div>
-    );
-  }
-
-  outputContainer() {
-    return (
-      <div className="outputContainer">
-        {this.state.output.map((output, index) => <span key={index}>{output} </span>)}
-      </div>
-    );
-  }
-
   render() {
     usedHeight = 0;
-    let leftContainer = this.leftContainer();
-    let rightContainer = this.rightContainer();
-    let outputContainer = this.outputContainer();
     return (
-      <div>
-        {leftContainer}
-        {rightContainer}
-        {outputContainer}
-        <div className="zoomContainer">
-          <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
+      <div className="main-page">
+
+        <div className="top-container">:)</div>
+
+        <div className="middle-block">
+          <div className="leftContainer">
+            <CodeBlock
+              program={this.state.program}
+              state={this.state.state}
+            />
+          </div>
+          <div className="rightContainer" ref={"rightContainer"}>
+            <ThreadTree
+              ThreadTree={this.state.threads}
+              renderZoomValue={this.renderZoomValue.bind(this)}
+              rightContainerRef={this.refs.rightContainer}
+            />
+            <div className="zoomContainer">
+              <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
+            </div>
+          </div>
         </div>
+
+        <div className="outputContainer">
+          {this.state.output.map((output, index) => <span key={index}>{output} </span>)}
+        </div>
+
       </div>
     );
   }

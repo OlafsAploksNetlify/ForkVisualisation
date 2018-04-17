@@ -4,7 +4,10 @@ import './styles.scss'
 
 import Parser from '../../services/Parser.js';
 
-const code = `if (fork() && !fork()) {
+const examples = [
+  {
+    title: 'Liels piemērs',
+    code: `if (fork() && !fork()) {
   if (fork() && fork()) {
     print(1);
   }
@@ -13,33 +16,26 @@ const code = `if (fork() && !fork()) {
 } else {
   print(3);
 }
-if (!(fork() && !fork())){print(55)}elseif(){print(567)}
-`;
-
-// const code = `if (fork() && !fork()) {
-//   if (fork() && fork()) {
-//     print(1);
-//   }
-// } else if ((!fork() || fork()) && fork()) {
-//   print(2);
-// } else {
-//   print(3);
-// }
-// print(5);
-// if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){print('x')}
-// print("6")
-// if (!(fork() && !fork())){print(55)}elseif(){print(567)}
-// `;
+print(5)
+if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){print('x')}
+print("6")
+if (!(fork() && !fork())){print(55)}elseif(){print(567)}`,
+  },
+];
 
 class IndexPage extends React.Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      code: '',
+    };
+
     this.parse = this.parse.bind(this);
   }
 
   parse() {
-    const code = this.textarea.value;
+    const { code } = this.state;
     let parsedCode = null;
     try {
       parsedCode = Parser.parse(code);
@@ -55,6 +51,12 @@ class IndexPage extends React.Component {
     }
   }
 
+  handleChange = (e, { name, value }) => {
+      this.setState({
+        [name]: value,
+      });
+  }
+
   render() {
     return (
     <div className="container">
@@ -67,14 +69,26 @@ class IndexPage extends React.Component {
         <li>print(n)</li>
         <li>fork()</li>
       </ul>
+
+      <div>
+        {examples.map(v => (
+          <button key={v.title} onClick={e => {
+            this.handleChange(e, {
+              name: 'code',
+              value: v.code,
+            });
+          }}>{v.title}</button>
+        ))}
+      </div>
+
       <textarea
-        ref={(e) => {this.textarea = e}}
         rows="15"
         cols="100"
+        name="code"
         placeholder="Ievadiet kodu te"
-        required="true">
-        {code}
-      </textarea>
+        onChange={this.handleChange}
+        value={this.state.code}
+        required="true" />
       <button onClick={this.parse}>Turpināt</button>
     </div>
   );
