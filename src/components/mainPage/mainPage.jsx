@@ -50,11 +50,6 @@ class MainPage extends React.Component {
     });
 
     window.tt = this.stepForward.bind(this);
-    window.scrollTo = this.scrollTo.bind(this);
-  }
-
-  scrollTo() {
-    this.refs.rightContainer.scrollTop()
   }
 
   renderZoomValue(zoomValue) {
