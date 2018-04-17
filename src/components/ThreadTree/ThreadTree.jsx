@@ -68,7 +68,7 @@ class ThreadTree extends React.Component {
     //this.state.zoomX
     //this.state.zoomY
     return <ThreadWindow
-      active={this.state.activePid === thread.pid}
+      active={this.props.activePid === thread.pid}
       key={thread.pid}
       pid={thread.pid}
       progress={thread.progress()}
