@@ -16,13 +16,19 @@ import './styles.scss'
 class ThreadWindow extends React.Component {
   constructor(props) {
     super(props);
-
+    console.log(props);
     this.state = {
       xOffset: this.props.xOffset*(this.props.width+this.props.horizontalMargin),
       yOffset: this.props.yOffset,
     };
-    console.log(this.props.pid);
-  console.log(this.props.childIndex);
+    // console.log(this.props.childIndex);
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({
+      xOffset: this.props.xOffset*(this.props.width+this.props.horizontalMargin),
+      yOffset: this.props.yOffset,
+    });
   }
 
   getInitialState() {
@@ -34,13 +40,16 @@ class ThreadWindow extends React.Component {
   }
 
   createVerticalLine() {
+    console.log(this.props.pid + " " + this.props.parentVerticalOffset);
+    let topOffset = (this.props.parentVerticalOffset + this.props.height) - this.state.yOffset;
+    // console.log(topOffset);
     return(
       [<div className="line"
         key={"vertical"}
         style={{
           height: this.state.yOffset-(this.props.parentVerticalOffset+this.props.height/2) + this.props.lineWidth,
           width: this.props.lineWidth+"px",
-          top: this.props.parentVerticalOffset-this.state.yOffset+this.props.height,
+          top: topOffset,
           left: this.props.xOffset-(this.props.width/2+this.props.horizontalMargin),
       }}></div>]
     );
