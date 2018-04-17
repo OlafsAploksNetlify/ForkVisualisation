@@ -77,7 +77,7 @@ class ThreadTree extends React.Component {
       height={this.threadWindowParams.height*this.state.zoomConstant}
       width={this.threadWindowParams.width*this.state.zoomConstant}
       zoomConstant={this.state.zoomConstant}
-      onClick={(pid) => {this.changeVisibleThread({pid})}}
+      onClick={(pid) => {this.props.changeVisibleThread({pid})}}
       parentVerticalOffset={parentVerticalOffset}
       childIndex={childIndex}
       lineWidth={2}

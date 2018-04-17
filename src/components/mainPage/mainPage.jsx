@@ -103,6 +103,7 @@ class MainPage extends React.Component {
               ThreadTree={this.state.threads}
               renderZoomValue={this.renderZoomValue.bind(this)}
               rightContainerRef={this.refs.rightContainer}
+              changeVisibleThread={this.changeVisibleThread.bind(this)}
             />
             <div className="zoomContainer">
               <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
