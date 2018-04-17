@@ -47,8 +47,8 @@ class ThreadWindow extends React.Component {
   }
 
   createVerticalLine() {
-    let topOffset = (this.state.parentVerticalOffset + this.state.height) - (this.state.yOffset + this.borderThickness);
-    let leftOffset = this.props.xOffset-( this.props.width/2 + this.state.horizontalMargin);
+    let topOffset = (this.state.parentVerticalOffset + this.state.height) - (this.state.yOffset + this.borderThickness*2);
+    let leftOffset = this.props.xOffset - ( this.props.width/2 + this.state.horizontalMargin);
 
     if (this.props.parentVerticalOffset == this.props.yOffset) { // first child doesn't need vertical lines
       return;
@@ -56,7 +56,7 @@ class ThreadWindow extends React.Component {
     return(
       [<div className="line"
         style={{
-          height: this.state.yOffset - (this.state.parentVerticalOffset + this.state.height/2) + this.props.lineWidth,
+          height: this.state.yOffset - (this.state.parentVerticalOffset + this.state.height/2) + this.borderThickness*2,
           width: this.props.lineWidth+"px",
           top: topOffset,
           left: leftOffset,
@@ -67,11 +67,12 @@ class ThreadWindow extends React.Component {
   createHorizontalLine() {
     let lineWidth, leftOffset;
     if (this.props.childIndex != 0) { // nav pirmais bērns -> garāka horizontāla līnija
-      lineWidth = (this.props.width/2 + this.state.horizontalMargin) - (this.props.lineWidth + this.borderThickness);
-      leftOffset = (this.props.lineWidth+1) - (this.props.width/2 + this.state.horizontalMargin);
+      lineWidth = (this.props.width/2 + this.state.horizontalMargin) - this.props.lineWidth;
+      leftOffset = this.props.lineWidth - (this.props.width/2 + this.state.horizontalMargin);
+      //(this.props.lineWidth+1) - (this.props.width/2 + this.state.horizontalMargin);
     } else { // pirmais bērns
-      lineWidth = this.props.width;
-      leftOffset = (-this.state.horizontalMargin + this.borderThickness);
+      lineWidth = this.props.width+this.borderThickness*2;
+      leftOffset = ( -this.state.horizontalMargin);
     }
     return(
       <div className="line"
@@ -110,6 +111,7 @@ class ThreadWindow extends React.Component {
           this.props.onClick(this.props.pid);
         }}
           >
+        {this.createConnectingLines()}
         <a href="/">
           <h4 style={{
             lineHeight: this.props.height-this.borderThickness + "px",
@@ -117,7 +119,6 @@ class ThreadWindow extends React.Component {
           }}>
           {this.props.pid}</h4>
         </a>
-        {this.createConnectingLines()}
     </div>
     );
   }
