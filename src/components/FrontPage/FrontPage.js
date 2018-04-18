@@ -90,15 +90,15 @@ class IndexPage extends React.Component {
       <p>Demonstrācija attēlo funkcijas fork izpildi. Logā zemāk ierakstiet kodu, kuru vēlaties izpildīt.</p>
       <p>Kodā atļautās valodas konstrukcijas ir:</p>
       <ul>
-        <li>if(...)</li>
+        <li>{'if (...) {...} else if (...) {...} else {...}'}</li>
         <li>'&&' un '||'</li>
-        <li>print(n)</li>
+        <li>print(x)</li>
         <li>fork()</li>
       </ul>
 
       <div>
         {examples.map(v => (
-          <button key={v.title} onClick={e => {
+          <button className="pretty-button" key={v.title} onClick={e => {
             this.setState({
               code: v.code,
             });
@@ -114,7 +114,8 @@ class IndexPage extends React.Component {
         onChange={this.handleChange}
         value={this.state.code}
         required="true" />
-      <button onClick={this.parse}>Turpināt</button>
+      <br />
+      <button className="pretty-button" onClick={this.parse}>Turpināt</button>
     </div>
   );
   }

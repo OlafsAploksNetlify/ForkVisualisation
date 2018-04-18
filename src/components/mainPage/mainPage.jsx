@@ -43,7 +43,6 @@ class MainPage extends React.Component {
     });
 
     rootThread.onPrint(value => {
-      console.log(`PRINTING ${value}`);
       const newOutput = this.state.output;
       newOutput.push(value);
       this.setState({
@@ -55,18 +54,15 @@ class MainPage extends React.Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  // componentWillUnmount() {
-  //   if (this.state.autoSteps) {
-  //     clearInterval(this.autoStepsInterval);
-  //   }
-  // }
+  componentDidMount() {
+    this.mounted = true;
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
+  }
 
   autoSteps = () => {
-    // if (this.state.autoSteps) {
-    //   clearInterval(this.autoStepsInterval);
-    // } else {
-    //   this.autoStepsInterval = setInterval(this.stepForward, 50);
-    // }
     const enable = !this.state.autoSteps;
     this.setState({
       autoSteps: enable,
@@ -89,6 +85,7 @@ class MainPage extends React.Component {
   }
 
   stepForward(auto = false) {
+    if (!this.mounted) return;
 
     let lastExecuted = null;
     if (this.state.seq === 'active') {
@@ -108,7 +105,7 @@ class MainPage extends React.Component {
     });
     this.forceUpdate();
 
-    if (auto || this.state.autoSteps) {
+    if (auto === true || this.state.autoSteps) {
       setTimeout(this.stepForward, this.state.stepDuration);
     }
   }
@@ -129,11 +126,12 @@ class MainPage extends React.Component {
         <div className="top-container">
           <i className="fas fa-arrow-left" onClick={this.props.goBack} />
 
-          <button onClick={this.stepForward}>Solis</button>
-          <button onClick={this.autoSteps}>
+          <button className="pretty-button" onClick={this.stepForward}>Solis</button>
+          <button className="pretty-button" onClick={this.autoSteps}>
             {this.state.autoSteps ? 'Pauze' : 'Izpildīt visu'}
           </button>
 
+          <span className="x-label">Soļa ātrums:</span>
           <input
             type="range"
             name="stepDuration"
@@ -144,6 +142,8 @@ class MainPage extends React.Component {
             step={10}
           />
 
+
+          <span className="x-label">Secība:</span>
           <input
             type="radio"
             name="seq"

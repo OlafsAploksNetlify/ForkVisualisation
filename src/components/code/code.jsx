@@ -70,7 +70,7 @@ const Statements = {
   },
   Print: ({ program, state }) => {
     return <div>
-      <span className={state.length?null:'active'}>
+      <span className={`print-block ${state.length?'':'active'} ${program.rValue ? 'true' : ''}`}>
         print({program.value});
       </span>
     </div>

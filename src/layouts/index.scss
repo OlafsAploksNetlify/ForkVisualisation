@@ -1,5 +1,24 @@
-html {
+$btnColorGreen: #2ecc71;
+$btnColorGreen: #2185d0;
+
+.pretty-button {
+  background: transparent;
+  border: 2px solid $btnColorGreen;
+  color: darken($btnColorGreen, 0%);
   font-family: sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  padding: 1px 6px 1px;
+  margin:5px;
+  &:hover {
+    cursor: pointer;
+    background: $btnColorGreen;
+    color: white;
+  }
+}
+
+html {
+  font-family: 'Roboto', sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }

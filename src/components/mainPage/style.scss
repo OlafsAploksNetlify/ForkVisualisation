@@ -9,11 +9,14 @@ h1 {
   .top-container {
     // background-color: #c8d6e5;
 
-    input {
+    input[type="radio"] {
       margin-left: 20px;
     }
+    input[name="stepDuration"] {
+      margin-left: 5px;
+    }
     label {
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
     }
 
@@ -23,6 +26,11 @@ h1 {
         cursor: pointer;
         color: black;
       }
+    }
+
+    .x-label {
+      font-size: 14px;
+      margin-left:30px;
     }
   }
   .middle-block {

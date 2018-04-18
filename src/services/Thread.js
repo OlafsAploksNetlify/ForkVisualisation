@@ -81,32 +81,29 @@ class Thread {
 
   callFork() {
     if (this.nextForkValue === null) {
-      console.log("FORKING", this.pid);
       const child = cloneDeep(this);
       child.initThread(true);
       child.nextForkValue = false;
       this.children.push(child);
 
       this.callback(this.onForkFn, child, this);
-      // if (typeof this.onForkFn === 'function') {
-      //   this.onForkFn(child, this);
-      // }
 
       this.nextForkValue = true;
       return null;
     } else {
-      console.log("RETURNING FORK");
       const res = this.nextForkValue;
       this.nextForkValue = null;
       return res;
     }
-    // TODO: before Fork event
-    console.log(`FORKING`);
     return true;
   }
 
   callPrint(value) {
-    this.callback(this.onPrintFn, value);
+    let v = value.toString().trim();
+    if (v[0] === v[v.length-1] && ['\'', '"'].indexOf(v[0]) >= 0) {
+      v = v.slice(1, v.length-1);
+    }
+    this.callback(this.onPrintFn, v);
   }
 
   stepForward(skipForks = false, forkValue = true) {
@@ -238,6 +235,7 @@ class Thread {
         return res;
       } else if (program.type === 'print') {
         if (!skipForks) {
+          program.rValue = true;
           this.callPrint(program.value);
         }
         return true;
