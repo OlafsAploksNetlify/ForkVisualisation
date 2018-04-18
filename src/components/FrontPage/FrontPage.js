@@ -41,6 +41,10 @@ if ((fork() && (fork() || fork())) || ((fork() || fork()) && fork())){print('x')
 print("6")
 if (!(fork() && !fork())){print(55)}elseif(){print(567)}`,
   },
+  {
+    title: 'Notīrīt',
+    code: ``,
+  },
 ];
 
 class IndexPage extends React.Component {
@@ -110,7 +114,12 @@ class IndexPage extends React.Component {
         rows="15"
         cols="100"
         name="code"
-        placeholder="Ievadiet kodu te"
+        placeholder={`Ievadiet kodu, piemēram:
+if (fork() && (!fork() || fork()) {
+  print(1);
+} else {
+  print(2);
+}`}
         onChange={this.handleChange}
         value={this.state.code}
         required="true" />
