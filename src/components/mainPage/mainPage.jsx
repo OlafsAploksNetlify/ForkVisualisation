@@ -28,6 +28,9 @@ class MainPage extends React.Component {
       activePid: rootThread.pid,
       output: [],
       zoomValue: 1,
+      seq: 'fcfs',
+      autoSteps: false,
+      stepDuration: 50,
     };
     this.scheduler = new Scheduler([rootThread]);
 
@@ -49,6 +52,28 @@ class MainPage extends React.Component {
     });
 
     this.stepForward = this.stepForward.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  // componentWillUnmount() {
+  //   if (this.state.autoSteps) {
+  //     clearInterval(this.autoStepsInterval);
+  //   }
+  // }
+
+  autoSteps = () => {
+    // if (this.state.autoSteps) {
+    //   clearInterval(this.autoStepsInterval);
+    // } else {
+    //   this.autoStepsInterval = setInterval(this.stepForward, 50);
+    // }
+    const enable = !this.state.autoSteps;
+    this.setState({
+      autoSteps: enable,
+    });
+    if (enable) {
+      this.stepForward(true);
+    }
   }
 
   renderZoomValue(zoomValue) {
@@ -57,12 +82,20 @@ class MainPage extends React.Component {
     });
   }
 
-  componentDidMount() {
-      // console.log(this.myInput.offsetWidth);
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
   }
 
-  stepForward() {
-    const lastExecuted = this.scheduler.execute();
+  stepForward(auto = false) {
+
+    let lastExecuted = null;
+    if (this.state.seq === 'active') {
+      lastExecuted = this.scheduler.executeProcess(this.state.activePid);
+    } else {
+      lastExecuted = this.scheduler.executeType(this.state.seq);
+    }
 
     if(lastExecuted == null) {
         return;
@@ -74,6 +107,10 @@ class MainPage extends React.Component {
       activePid: lastExecuted.pid,
     });
     this.forceUpdate();
+
+    if (auto || this.state.autoSteps) {
+      setTimeout(this.stepForward, this.state.stepDuration);
+    }
   }
 
   changeVisibleThread({pid}) {
@@ -93,6 +130,44 @@ class MainPage extends React.Component {
           <i className="fas fa-arrow-left" onClick={this.props.goBack} />
 
           <button onClick={this.stepForward}>Solis</button>
+          <button onClick={this.autoSteps}>
+            {this.state.autoSteps ? 'Pauze' : 'Izpildīt visu'}
+          </button>
+
+          <input
+            type="range"
+            name="stepDuration"
+            value={this.state.stepDuration}
+            onChange={this.handleChange}
+            min={10}
+            max={1000}
+            step={10}
+          />
+
+          <input
+            type="radio"
+            name="seq"
+            value="fcfs"
+            id="seq_fcfs"
+            checked={this.state.seq === 'fcfs'}
+            onChange={this.handleChange}
+          /> <label htmlFor="seq_fcfs">Vecāks vispirms (FCFS)</label>
+          <input
+            type="radio"
+            name="seq"
+            value="sjf"
+            id="seq_sjf"
+            checked={this.state.seq === 'sjf'}
+            onChange={this.handleChange}
+          /> <label htmlFor="seq_sjf">Īsākais process</label>
+          <input
+            type="radio"
+            name="seq"
+            value="active"
+            id="seq_active"
+            checked={this.state.seq === 'active'}
+            onChange={this.handleChange}
+          /> <label htmlFor="seq_active">Aktīvais process</label>
 
         </div>
 
@@ -111,9 +186,9 @@ class MainPage extends React.Component {
               changeVisibleThread={this.changeVisibleThread.bind(this)}
               activePid={this.state.activePid}
             />
-            <div className="zoomContainer">
-              <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
-            </div>
+          </div>
+          <div className="zoomContainer">
+            <h3>{Math.round(this.state.zoomValue*100) + "%"}</h3>
           </div>
         </div>
 

@@ -56,6 +56,12 @@ class IndexPage extends React.Component {
 
   parse() {
     const { code } = this.state;
+
+    if (!code.toString().trim()) {
+      alert('Tukšs kods');
+      return;
+    }
+
     let parsedCode = null;
     try {
       parsedCode = Parser.parse(code);

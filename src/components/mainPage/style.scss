@@ -1,16 +1,21 @@
 h1 {
   font-size: 64px;
 }
-input {
-  height: 300px;
-  width: 70%;
-}
+
 .main-page {
   display: flex;
   height: 100vh;
   flex-direction: column;
   .top-container {
     // background-color: #c8d6e5;
+
+    input {
+      margin-left: 20px;
+    }
+    label {
+      font-size: 16px;
+      cursor: pointer;
+    }
 
     .fas.fa-arrow-left {
       padding: 10px;
@@ -21,6 +26,7 @@ input {
     }
   }
   .middle-block {
+    position: relative;
     display: flex;
     flex-grow: 1;
   }
@@ -33,6 +39,7 @@ input {
     color: white;
     font-family: 'Courier';
     padding: 10px;
+    overflow-y: scroll;
   }
 }
 
