@@ -111,7 +111,7 @@ class Parser {
             type: 'fork',
           };
         } else {
-          throw new Parser.Exception(`Nezināms nosacījums ${condition}`);
+          throw new Parser.Exception(`Unknown condition ${condition}`);
         }
       }
     }
@@ -145,7 +145,7 @@ class Parser {
         return bracesRegex.lastIndex;
       }
     }
-    throw new Parser.Exception("Nepareizs IF nosacījums (1)");
+    throw new Parser.Exception("Incorrect IF condition (1)");
   }
 
   parseIf(code) {
@@ -164,7 +164,7 @@ class Parser {
       }
 
       if (!condition) {
-        throw new Parser.Exception("Nepareizs IF nosacījums (2)");
+        throw new Parser.Exception("Incorrect IF conditions (2)");
       }
 
       let content = this.getBracketContent(code, '{}', condition.end + 1);
@@ -191,13 +191,13 @@ class Parser {
 
     const fn = code.match(/^(\w+)\(/);
     if (!fn) {
-      throw new Parser.Exception("Nepareizi formatēts kods (1)");
+      throw new Parser.Exception("Incorrectly formatted code (1)");
     }
 
     if (fn[1] === "print") {
       const argument = this.getBracketContent(code, '()', 5);
       if (!argument) {
-        throw new Parser.Exception("Nepareizi formatēts kods (2)");
+        throw new Parser.Exception("Incorrectly formatted code (2)");
       }
 
       return {
@@ -206,7 +206,7 @@ class Parser {
         value: argument.content,
       };
     } else {
-      throw new Parser.Exception(`Nezināma funkcija ${fn[1]}`);
+      throw new Parser.Exception(`Unknown function ${fn[1]}`);
     }
   }
 
