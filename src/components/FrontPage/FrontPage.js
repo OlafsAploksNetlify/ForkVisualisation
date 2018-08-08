@@ -6,7 +6,7 @@ import Parser from '../../services/Parser.js';
 
 const examples = [
   {
-    title: 'KD0',
+    title: 'Test case #1',
     code: `if (!fork() || !fork()) {
   print("A");
 } else if (!fork() && fork()) {
@@ -16,7 +16,7 @@ const examples = [
 }`,
   },
   {
-    title: 'KD1',
+    title: 'Test case #1',
     code: `if (!fork() && fork()) {
   print("A");
 } else if (fork() || !fork()) {
@@ -26,7 +26,7 @@ const examples = [
 }`,
   },
   {
-    title: 'Liels piemērs',
+    title: 'Big test case',
     code: `if (fork() && !fork()) {
   if (fork() && fork()) {
     print(1);
@@ -42,7 +42,7 @@ print("6")
 if (!(fork() && !fork())){print(55)}elseif(){print(567)}`,
   },
   {
-    title: 'Notīrīt',
+    title: 'clear',
     code: ``,
   },
 ];
@@ -62,7 +62,7 @@ class IndexPage extends React.Component {
     const { code } = this.state;
 
     if (!code.toString().trim()) {
-      alert('Tukšs kods');
+      alert('Please enter code');
       return;
     }
 
@@ -90,9 +90,9 @@ class IndexPage extends React.Component {
   render() {
     return (
     <div className="container">
-      <h1>OSK fork demonstrācija</h1>
-      <p>Demonstrācija attēlo funkcijas fork izpildi. Logā zemāk ierakstiet kodu, kuru vēlaties izpildīt.</p>
-      <p>Kodā atļautās valodas konstrukcijas ir:</p>
+      <h1>Fork demonstration</h1>
+      <p>Demonstration graphically shows execution of function - fork. Enter code to execute in text box below.</p>
+      <p>Allowed language constructs:</p>
       <ul>
         <li>{'if (...) {...} else if (...) {...} else {...}'}</li>
         <li>'&&' un '||'</li>
@@ -114,7 +114,7 @@ class IndexPage extends React.Component {
         rows="15"
         cols="100"
         name="code"
-        placeholder={`Ievadiet kodu, piemēram:
+        placeholder={`Enter code, for example:
 if (fork() && (!fork() || fork()) {
   print(1);
 } else {
@@ -124,7 +124,7 @@ if (fork() && (!fork() || fork()) {
         value={this.state.code}
         required="true" />
       <br />
-      <button className="pretty-button" onClick={this.parse}>Turpināt</button>
+      <button className="pretty-button" onClick={this.parse}>Continue</button>
     </div>
   );
   }
