@@ -126,12 +126,12 @@ class MainPage extends React.Component {
         <div className="top-container">
           <i className="fas fa-arrow-left" onClick={this.props.goBack} />
 
-          <button className="pretty-button" onClick={this.stepForward}>Solis</button>
+          <button className="pretty-button" onClick={this.stepForward}>Step forward</button>
           <button className="pretty-button" onClick={this.autoSteps}>
-            {this.state.autoSteps ? 'Pauze' : 'Izpildīt visu'}
+            {this.state.autoSteps ? 'Pause' : 'Execute all'}
           </button>
 
-          <span className="x-label">Soļa ātrums:</span>
+          <span className="x-label">Step pace:</span>
           <input
             type="range"
             name="stepDuration"
@@ -143,7 +143,7 @@ class MainPage extends React.Component {
           />
 
 
-          <span className="x-label">Secība:</span>
+          <span className="x-label">Method:</span>
           <input
             type="radio"
             name="seq"
@@ -151,7 +151,7 @@ class MainPage extends React.Component {
             id="seq_fcfs"
             checked={this.state.seq === 'fcfs'}
             onChange={this.handleChange}
-          /> <label htmlFor="seq_fcfs">Vecāks vispirms (FCFS)</label>
+          /> <label htmlFor="seq_fcfs">(FCFS)</label>
           <input
             type="radio"
             name="seq"
@@ -159,7 +159,7 @@ class MainPage extends React.Component {
             id="seq_sjf"
             checked={this.state.seq === 'sjf'}
             onChange={this.handleChange}
-          /> <label htmlFor="seq_sjf">Īsākais process</label>
+          /> <label htmlFor="seq_sjf">Shortest process first</label>
           <input
             type="radio"
             name="seq"
@@ -167,7 +167,7 @@ class MainPage extends React.Component {
             id="seq_active"
             checked={this.state.seq === 'active'}
             onChange={this.handleChange}
-          /> <label htmlFor="seq_active">Aktīvais process</label>
+          /> <label htmlFor="seq_active">Selected process</label>
 
         </div>
 
